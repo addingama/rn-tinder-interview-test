@@ -18,6 +18,7 @@ const DEFAULT_ADDED_PHOTO: Photo = {
 
 export const ProfileScreen = () => {
   let api: Api = new Api(DEFAULT_API_CONFIG);
+
   const [member, setMember] = useState<Member>({});
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -36,7 +37,6 @@ export const ProfileScreen = () => {
     try {
       setLoading(true);
       const response = await api.getMember(MEMBER_ID);
-      console.log(response)
       setMember(response);
       fetchPhotos(response.id);
       setLoading(false);
