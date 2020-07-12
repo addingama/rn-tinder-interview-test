@@ -1,11 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {SafeAreaView, Text, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {Grid, ProfilePhoto} from 'src/components/atoms';
 import {Member, Photo, PhotoResponse} from 'src/models';
 import {Api} from 'src/services/api';
 import {DEFAULT_API_CONFIG} from 'src/services/api/api-config';
 
 const MEMBER_ID = 1;
+
+const DEFAULT_ADDED_PHOTO: Photo = {
+  "id": "11111113",
+  "url": "https://media.king5.com/assets/KING/images/156daac9-f162-4c82-bb78-6edc4225d9ae/156daac9-f162-4c82-bb78-6edc4225d9ae_750x422.jpg",
+  "width": 750,
+  "height": 422,
+  "centerX": 349,
+  "centerY": 203
+}
 
 export const ProfileScreen = () => {
   let api: Api = new Api(DEFAULT_API_CONFIG);
@@ -50,6 +59,11 @@ export const ProfileScreen = () => {
     setPhotos(newPhotos);
   };
 
+  const addPhoto = () => {
+    let newPhotos = [...photos, DEFAULT_ADDED_PHOTO];
+    setPhotos(newPhotos); 
+  }
+
   const renderItem = ({item, index}: {item: Photo; index: number}) => {
     return <ProfilePhoto data={item} onDelete={() => deletePhoto(index)} />;
   };
@@ -63,8 +77,37 @@ export const ProfileScreen = () => {
         renderItem={renderItem}
         marginExternal={8}
         marginInternal={20}
-        contentContainerStyle={{flexGrow: 1}}
+        contentContainerStyle={{flexGrow: 1, paddingVertical: 20}}
       />
+      <TouchableOpacity style={addButtonStyle} onPress={addPhoto}>
+        <Text style={addTextStyle}>+</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
+};
+
+const addTextStyle: TextStyle = {
+  fontSize: 30,
+  color: 'red',
+}
+
+
+const addButtonStyle: ViewStyle = {
+  backgroundColor: 'white',
+  width: 50,
+  height: 50,
+  alignSelf: 'flex-end',
+  marginRight: 10,
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 30,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 3,
+  },
+  shadowOpacity: 0.29,
+  shadowRadius: 4.65,
+
+  elevation: 7,
 };
